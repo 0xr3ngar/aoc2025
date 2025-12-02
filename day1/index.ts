@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs';
+import { readFileSync } from "fs";
 
 const solveFirst = (lines: string[]) => {
     let timesBeenZero = 0;
@@ -14,10 +14,10 @@ const solveFirst = (lines: string[]) => {
             throw new Error(`distance line ${i + 1}: "${line}"`);
         }
 
-        if (dir === 'L') {
+        if (dir === "L") {
             current = (current - dist) % 100;
             if (current < 0) current += 100;
-        } else if (dir === 'R') {
+        } else if (dir === "R") {
             current = (current + dist) % 100;
         } else {
             throw new Error(`line ${i + 1}: "${line}"`);
@@ -28,12 +28,15 @@ const solveFirst = (lines: string[]) => {
         }
     }
 
-    console.log('timesBeenZero', timesBeenZero);
     return timesBeenZero;
 };
 
-const countZeroHitsDuringRotation = (current: number, dir: "L" | "R", dist: number) => {
-    if (dir === 'R') {
+const countZeroHitsDuringRotation = (
+    current: number,
+    dir: "L" | "R",
+    dist: number,
+) => {
+    if (dir === "R") {
         // If current is 90 and we add 10 (dist), we get 100. 100/100 = 1 hit.
         // If current is 90 and we add 110, we get 200. 200/100 = 2 hits.
         return Math.floor((current + dist) / 100);
@@ -50,16 +53,16 @@ const countZeroHitsDuringRotation = (current: number, dir: "L" | "R", dist: numb
 
     // we hit the first zero (1 hit), then see how many full 100s fit in the remaining distance
     return 1 + Math.floor((dist - distToFirstZero) / 100);
-}
+};
 
 const applyRotation = (current: number, dir: "L" | "R", dist: number) => {
-    if (dir === 'R') {
+    if (dir === "R") {
         return (current + dist) % 100;
     }
     let next = (current - dist) % 100;
     if (next < 0) next += 100;
     return next;
-}
+};
 
 const solveSecond = (lines: string[]) => {
     let current = 50;
@@ -77,24 +80,22 @@ const solveSecond = (lines: string[]) => {
         current = applyRotation(current, dir, dist);
     }
     return zeroHits;
-}
+};
 
-
-export const day1 = (fileToRead: 'example' | 'input' = 'example') => {
+export const day1 = (fileToRead: "example" | "input" = "example") => {
     const inputFile = `${fileToRead}.txt`;
     const currentDirectory = import.meta.url
-        .replace('file://', '')
-        .replace('index.ts', inputFile);
+        .replace("file://", "")
+        .replace("index.ts", inputFile);
 
-    const input = readFileSync(currentDirectory, 'utf8');
-    const lines = input.split('\n').map(s => s.trim()).filter(s => s.length > 0);
+    const input = readFileSync(currentDirectory, "utf8");
+    const lines = input
+        .split("\n")
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0);
 
     const first = solveFirst(lines);
     const second = solveSecond(lines);
 
-    console.log('first', first);
-    console.log('second', second);
-
     return { first, second };
 };
-
